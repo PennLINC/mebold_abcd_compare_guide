@@ -1,0 +1,3 @@
+[submodule "processing_code/curation"]
+	path = processing_code/curation
+	url = git@github.com:PennLINC/mebold-trt.git
