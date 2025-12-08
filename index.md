@@ -51,3 +51,24 @@ In each of the scripts, there is a variable `REPRO_DIR` or `repro_dir` that need
 <br>
 
 ### 0. Download data from FlyWheel
+
+The steps to create the initial BIDS data can be found in `processing_code/curation`.
+Briefly, the steps were to download the dicom tarballs from Flywheel and run heudiconv.
+Because no-RF images are included in the dicoms, these were split into separate files.
+The anatomical scans were refaced using AFNI.
+Finally, the events files were converted to BIDS format.
+
+The validated BIDS data were uploaded to OpenNeuro.
+This is where the replication process can begin - 
+with the datalad cloned BIDS data from OpenNeuro.
+
+### 1. Download from OpenNeuro
+
+As the `executivefunction` user on cubic we cloned the data from OpenNeudo using
+
+```bash
+micromamba activate babs
+cd /cbica/projects/executive_function/mebold_trt/
+datalad clone ///openneuro/ds005250
+datalad get -J 10 .
+```
