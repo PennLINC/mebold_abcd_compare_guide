@@ -85,3 +85,64 @@ Configure the remote S3 repository to have the highest cost, ensuring that files
 	annex-uuid = 683c9a58-3e80-42a2-b641-01d5becfcdda
 	annex-cost = 500.0 # add this line
 ```
+
+### 2. Use BABS to run BIDS Apps
+
+#### 2.1. MRIQC v24.0.2
+
+Pull the Apptainer image and create a DataLad dataset containing the image
+
+```bash
+apptainer_path=/cbica/projects/executive_function/mebold_trt/software/apptainer
+
+apptainer build \
+    ${apptainer_path}/mriqc-24-0-2.sif \
+    docker://nipreps/mriqc:24.0.2
+
+
+apptainerDS_path=/cbica/projects/executive_function/mebold_trt/software/apptainer-ds
+
+datalad create -D "Create mriqc-24-0-2 DataLad dataset" ${apptainerDS_path}/mriqc-24-0-2-ds
+cd ${apptainerDS_path}/mriqc-24-0-2-ds
+datalad containers-add \
+    --url ${apptainer_path}/mriqc-24-0-2.sif \
+    mriqc-24-0-2
+```
+
+[Run MRIQC with BABS.](https://github.com/PennLINC/mebold-trt/tree/main/processing/MRIQC)
+
+#### 2.2. NORDIC (v0.0.1) + fMRIPrep (v25.2.3)
+
+Pull the Apptainer image and create a DataLad dataset containing the image
+
+```bash
+apptainer_path=/cbica/projects/executive_function/mebold_trt/software/apptainer
+
+apptainer build \
+    ${apptainer_path}/fmriprep-25-2-3.sif \
+    docker://nipreps/fmriprep:25.2.3
+    
+
+cd /cbica/projects/executive_function/mebold_trt/software
+git clone https://github.com/nipreps/NORDIC_Raw.git
+cd NORDIC_Raw
+git checkout executable
+apptainer build ${apptainer_path}/nordic-0-0-1.sif Apptainer.def 
+
+#################################################
+
+apptainerDS_path=/cbica/projects/executive_function/mebold_trt/software/apptainer-ds
+
+datalad create -D "Create nordic-0-0-1 and fmriprep-25-2-3 DataLad dataset" ${apptainerDS_path}/nordic-fmriprep-ds
+cd ${apptainerDS_path}/nordic-fmriprep-ds
+
+datalad containers-add \
+    --url ${apptainer_path}/fmriprep-25-2-3.sif \
+    fmriprep-25-2-3
+
+datalad containers-add \
+    --url ${apptainer_path}/nordic-0-0-1.sif \
+    nordic-0-0-1
+```
+
+[Run NORDIC+fMRIPrep with BABS.](https://github.com/PennLINC/mebold-trt/tree/main/processing/NORDIC-fMRIPrep)
