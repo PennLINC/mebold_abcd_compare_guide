@@ -109,7 +109,7 @@ datalad containers-add \
     mriqc-24-0-2
 ```
 
-[Run MRIQC with BABS](https://github.com/PennLINC/mebold-trt/tree/main/processing/MRIQC):
+Run MRIQC with BABS using the following [scripts](https://github.com/PennLINC/mebold-trt/tree/main/processing/MRIQC):
 
 ```bash
 # create the BABS project
@@ -158,7 +158,7 @@ datalad containers-add \
     nordic-0-0-1
 ```
 
-[Run NORDIC+fMRIPrep with BABS](https://github.com/PennLINC/mebold-trt/tree/main/processing/NORDIC-fMRIPrep):
+Run NORDIC+fMRIPrep with BABSS using the following [scripts](https://github.com/PennLINC/mebold-trt/tree/main/processing/NORDIC-fMRIPrep):
 
 ```bash
 # create the BABS project
