@@ -42,7 +42,7 @@ All project analyses are described below along with the corresponding code on Gi
 
 *0.* Download data from FlyWheel and curate for OpenNeuro  
 *1.* Download from OpenNeuro  
-*2.* Run BABS  
+*2.* Run processing scripts  
 
 
 
@@ -86,7 +86,7 @@ Configure the remote S3 repository to have the highest cost, ensuring that files
 	annex-cost = 500.0 # add this line
 ```
 
-### 2. Use BABS to run BIDS Apps
+### 2. Run processing scripts
 
 #### 2.1. MRIQC v24.0.2
 
@@ -109,7 +109,20 @@ datalad containers-add \
     mriqc-24-0-2
 ```
 
-[Run MRIQC with BABS.](https://github.com/PennLINC/mebold-trt/tree/main/processing/MRIQC)
+[Run MRIQC with BABS](https://github.com/PennLINC/mebold-trt/tree/main/processing/MRIQC):
+
+```bash
+# create the BABS project
+bash babs_mriqc_init.sh
+
+# Run BABS
+cd /cbica/projects/executive_function/mebold_trt/derivatives/mriqc_babs_project
+# Run `babs submit` and `babs status`
+# Run `babs merge` when all jobs finish successfully
+
+# Create an ephemeral clone + unzip outputs
+bash babs_mriqc_finish.sh
+```
 
 #### 2.2. NORDIC (v0.0.1) + fMRIPrep (v25.2.3)
 
@@ -129,7 +142,7 @@ cd NORDIC_Raw
 git checkout executable
 apptainer build ${apptainer_path}/nordic-0-0-1.sif Apptainer.def 
 
-#################################################
+###############################################################################
 
 apptainerDS_path=/cbica/projects/executive_function/mebold_trt/software/apptainer-ds
 
@@ -145,4 +158,23 @@ datalad containers-add \
     nordic-0-0-1
 ```
 
-[Run NORDIC+fMRIPrep with BABS.](https://github.com/PennLINC/mebold-trt/tree/main/processing/NORDIC-fMRIPrep)
+[Run NORDIC+fMRIPrep with BABS](https://github.com/PennLINC/mebold-trt/tree/main/processing/NORDIC-fMRIPrep):
+
+```bash
+# create the BABS project
+bash babs_nordic_fmriprep_init.sh
+
+# Run BABS
+cd /cbica/projects/executive_function/mebold_trt/derivatives/nordic_fmriprep_babs_project
+# Run `babs submit` and `babs status`
+# Run `babs merge` when all jobs finish successfully
+
+# Create an ephemeral clone + unzip outputs
+bash babs_nordic_fmriprep_finish.sh
+```
+
+#### 2.3. tedana
+
+#### 2.4. XCP-D
+
+#### 2.5. Fractal n-back GLMs with Nilearn
