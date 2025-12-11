@@ -158,7 +158,7 @@ datalad containers-add \
     nordic-0-0-1
 ```
 
-Run NORDIC+fMRIPrep with BABSS using the following [scripts](https://github.com/PennLINC/mebold-trt/tree/main/processing/NORDIC-fMRIPrep):
+Run NORDIC+fMRIPrep with BABS using the following [scripts](https://github.com/PennLINC/mebold-trt/tree/main/processing/NORDIC-fMRIPrep):
 
 ```bash
 # create the BABS project
@@ -174,6 +174,17 @@ bash babs_nordic_fmriprep_finish.sh
 ```
 
 #### 2.3. tedana
+
+Run tedana using the following [scripts](https://github.com/PennLINC/mebold-trt/tree/main/processing):
+
+```bash
+# create subject-pair tsv
+python generate_sub_ses_pairs.py
+
+# Run tedana
+cd /cbica/projects/executive_function/mebold_trt/github/parker/processing
+sbatch run_tedana.sbatch
+```
 
 #### 2.4. XCP-D
 
