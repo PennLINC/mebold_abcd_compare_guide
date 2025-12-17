@@ -164,11 +164,11 @@ Create the BABS project by running [`bash babs_nordic_fmriprep_init.sh`](https:/
 
 ```bash
 cp \
-	/cbica/projects/executive_function/mebold_trt/derivatives/code/fmriprep_filter.json \
-	/cbica/projects/executive_function/mebold_trt/derivatives/nordic_fmriprep_babs_project/analysis/code	
+  /cbica/projects/executive_function/mebold_trt/derivatives/code/fmriprep_filter.json \
+  /cbica/projects/executive_function/mebold_trt/derivatives/nordic_fmriprep_babs_project/analysis/code	
 cp \
-	/cbica/projects/executive_function/mebold_trt/derivatives/code/nordic_filter.json \
-	/cbica/projects/executive_function/mebold_trt/derivatives/nordic_fmriprep_babs_project/analysis/code
+  /cbica/projects/executive_function/mebold_trt/derivatives/code/nordic_filter.json \
+  /cbica/projects/executive_function/mebold_trt/derivatives/nordic_fmriprep_babs_project/analysis/code
 
 cd /cbica/projects/executive_function/mebold_trt/derivatives/nordic_fmriprep_babs_project
 babs sync-code -m "add nordic and fmriprep filter files"
