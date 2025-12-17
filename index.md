@@ -160,19 +160,20 @@ datalad containers-add \
 
 Run NORDIC+fMRIPrep with BABS using the following [scripts](https://github.com/PennLINC/mebold-trt/tree/main/processing/NORDIC-fMRIPrep):
 
-Create the BABS project by running [`bash babs_nordic_fmriprep_init.sh`](https://github.com/PennLINC/mebold-trt/blob/main/processing/NORDIC-fMRIPrep/babs_nordic_fmriprep_init.sh). Once the project is create, add [`fmriprep_filter.json`](https://github.com/PennLINC/mebold-trt/blob/main/processing/NORDIC-fMRIPrep/fmriprep_filter.json) and [`nordic_filter.json`](https://github.com/PennLINC/mebold-trt/blob/main/processing/NORDIC-fMRIPrep/fmriprep_filter.json) to `nordic_fmriprep_babs_project/analysis/code`
-
-Make the following changes to `nordic_fmriprep_babs_project/analysis/code/pipeline_zip.sh`:
-1. NORDIC: Add `--bids-filter-file /code/nordic_filter.json`  and bind the file `-B code/nordic_filter.json:/code/nordic_filter.json`  
-2. FMRIPREP: 
-  * Add `-B "${PWD}/.git/tmp/wkdir":/tmpwk` , `--env TMPDIR=/tmpwk` , `-w /tmpwk`  
-  * Add `--bids-filter-file /code/fmriprep_filter.json`  and bind the file `-B code/fmriprep_filter.json:/code/fmriprep_filter.json`
-3. Save those changes:
+Create the BABS project by running [`bash babs_nordic_fmriprep_init.sh`](https://github.com/PennLINC/mebold-trt/blob/main/processing/NORDIC-fMRIPrep/babs_nordic_fmriprep_init.sh). Once the project is create, add [`fmriprep_filter.json`](https://github.com/PennLINC/mebold-trt/blob/main/processing/NORDIC-fMRIPrep/fmriprep_filter.json) and [`nordic_filter.json`](https://github.com/PennLINC/mebold-trt/blob/main/processing/NORDIC-fMRIPrep/fmriprep_filter.json) to `nordic_fmriprep_babs_project/analysis/code`, and push the filter files.
 
 ```bash
-cd /cbica/projects/executive_function/mebold_trt/derivatives/nordic_fmriprep_babs_project
-babs sync-code -m "bind nordic and fmriprep filter file, set working directory"
+cp \
+	/cbica/projects/executive_function/mebold_trt/derivatives/code/fmriprep_filter.json \
+	/cbica/projects/executive_function/mebold_trt/derivatives/nordic_fmriprep_babs_project/analysis/code	
+cp \
+	/cbica/projects/executive_function/mebold_trt/derivatives/code/nordic_filter.json \
+	/cbica/projects/executive_function/mebold_trt/derivatives/nordic_fmriprep_babs_project/analysis/code
 
+cd /cbica/projects/executive_function/mebold_trt/derivatives/nordic_fmriprep_babs_project
+babs sync-code -m "add nordic and fmriprep filter files"
+
+###############################################################################
 
 # Run BABS
 cd /cbica/projects/executive_function/mebold_trt/derivatives/nordic_fmriprep_babs_project
