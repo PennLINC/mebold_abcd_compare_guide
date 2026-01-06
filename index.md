@@ -197,6 +197,99 @@ cd /cbica/projects/executive_function/mebold_trt/github/parker/processing
 sbatch run_tedana.sbatch
 ```
 
-#### 2.4. XCP-D
+#### 2.4. XCP-D v0.13.0
+
+Pull the Apptainer image and create a DataLad dataset containing the image
+
+```bash
+apptainer_path=/cbica/projects/executive_function/mebold_trt/software/apptainer
+
+apptainer build \
+    ${apptainer_path}/xcpd-0-13-0.sif \
+    docker://pennlinc/xcp_d:0.13.0
+
+
+###############################################################################
+    
+apptainerDS_path=/cbica/projects/executive_function/mebold_trt/software/apptainer-ds
+
+datalad create -D "Create xcpd-0-13-0 DataLad dataset" ${apptainerDS_path}/xcpd-0-13-0-ds
+cd ${apptainerDS_path}/xcpd-0-13-0-ds
+datalad containers-add \
+    --url ${apptainer_path}/xcpd-0-13-0.sif \
+    xcpd-0-13-0
+```
+
+Run XCP-D with BABS using the following [scripts](https://github.com/PennLINC/mebold-trt/tree/main/processing/XCP-D):
+
+For [single-echo](https://github.com/PennLINC/mebold-trt/tree/main/processing/XCP-D/single-echo):
+
+```bash
+# create the BABS project
+bash babs_xcpd_SE_init.sh
+
+# add filter file
+cp \
+	/cbica/projects/executive_function/mebold_trt/derivatives/code/xcpd_SE_filter.json \
+	/cbica/projects/executive_function/mebold_trt/derivatives/xcpd_SE_babs_project/analysis/code
+cd /cbica/projects/executive_function/mebold_trt/derivatives/xcpd_SE_babs_project
+babs sync-code -m "Add xcpd SE filter file"
+
+# Run BABS
+cd /cbica/projects/executive_function/mebold_trt/derivatives/xcpd_SE_babs_project
+# Run `babs submit` and `babs status`
+# Run `babs merge` when all jobs finish successfully
+
+# Create an ephemeral clone + unzip outputs
+bash babs_xcpd_SE_finish.sh
+```
+
+For [multi-echo](https://github.com/PennLINC/mebold-trt/tree/main/processing/XCP-D/multi-echo):
+
+First, need to `nano /cbica/projects/executive_function/mebold_trt/derivatives/tedana/dataset_description.json`
+```json
+{
+    "Name": "tedana",
+    "BIDSVersion": "1.5.0",
+    "DatasetType": "derivative",
+    "GeneratedBy": [{"Name": "tedana"}]
+}
+```
+
+Then, save `tedana` output as a datalad dataset
+
+```bash
+cd /cbica/projects/executive_function/mebold_trt/derivatives/
+datalad create -c text2git tedana_dl
+cp -r tedana/* tedana_dl
+datalad save \
+	-d /cbica/projects/executive_function/mebold_trt/derivatives/tedana_dl \
+	-m "checked dataset into datalad"
+```
+
+Lastly, use BABS to run XCP-D
+
+```bash
+# create the BABS project
+bash babs_xcpd_ME_init.sh
+
+# add filter file and tedana_xcp_d_config
+cp \
+	/cbica/projects/executive_function/mebold_trt/derivatives/code/xcpd_ME_filter.json \
+	/cbica/projects/executive_function/mebold_trt/derivatives/xcpd_ME_babs_project/analysis/code
+cp \
+	/cbica/projects/executive_function/mebold_trt/derivatives/code/tedana_xcp_d_config.yml \
+	/cbica/projects/executive_function/mebold_trt/derivatives/xcpd_ME_babs_project/analysis/code
+cd /cbica/projects/executive_function/mebold_trt/derivatives/xcpd_ME_babs_project
+babs sync-code -m "add xcpd ME filter file and tedana_xcp_d_config"
+
+# Run BABS
+cd /cbica/projects/executive_function/mebold_trt/derivatives/xcpd_ME_babs_project
+# Run `babs submit` and `babs status`
+# Run `babs merge` when all jobs finish successfully
+
+# Create an ephemeral clone + unzip outputs
+bash babs_xcpd_ME_finish.sh
+```
 
 #### 2.5. Fractal n-back GLMs with Nilearn
